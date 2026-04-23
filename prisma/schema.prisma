@@ -1,0 +1,70 @@
+// This is your Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id           Int         @id @default(autoincrement())
+  username     String      @unique
+  email        String      @unique
+  passwordHash String      @map("password_hash")
+  role         Role        @default(USER)
+  characters   Character[]
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  @@map("users")
+}
+
+model Character {
+  id      Int             @id @default(autoincrement())
+  name    String
+  level   Int             @default(1)
+  userId  Int             @map("user_id")
+  classId Int             @map("class_id")
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class   Class           @relation(fields: [classId], references: [id])
+  items   CharacterItem[]
+
+  @@map("characters")
+}
+
+model Class {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  description String
+  characters  Character[]
+
+  @@map("classes")
+}
+
+model Item {
+  id         Int             @id @default(autoincrement())
+  name       String          @unique
+  type       String
+  tier       Int
+  characters CharacterItem[]
+
+  @@map("items")
+}
+
+model CharacterItem {
+  characterId Int       @map("character_id")
+  itemId      Int       @map("item_id")
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  item        Item      @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@id([characterId, itemId])
+  @@map("character_items")
+}

@@ -1,0 +1,32 @@
+{
+  "name": "final-project-template",
+  "version": "1.0.0",
+  "description": "Character Creation REST API with authentication and authorization",
+  "license": "ISC",
+  "author": "Andrew Edgerton",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --env-file=.env --watch src/server.js",
+    "start": "node src/server.js",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "node prisma/seed.js",
+    "db:setup": "prisma migrate deploy && node prisma/seed.js",
+    "build": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "prettier": "^3.6.1",
+    "prisma": "^5.22.0"
+  }
+}
