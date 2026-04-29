@@ -263,11 +263,11 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 
 **404 Not Found — character doesn't exist:**
 - id: `9999`, Body: `{ "itemId": 1 }`
-- Expect 404
+- Expect 404: `{ "error": "Character with id 9999 does not exist." }`
 
 **404 Not Found — item doesn't exist:**
 - id: `1`, Body: `{ "itemId": 9999 }`
-- Expect 404
+- Expect 404: `{ "error": "Item with id 9999 does not exist." }`
 
 **409 Conflict — item already assigned:**
 - id: `1`, Body: `{ "itemId": 1 }` (Iron Sword already on Aragorn)
@@ -300,7 +300,7 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 
 **404 Not Found — character doesn't exist:**
 - id: `9999`, itemId: `1`
-- Expect 404
+- Expect 404: `{ "error": "Character with id 9999 does not exist." }`
 
 **404 Not Found — item not assigned to character:**
 - id: `1`, itemId: `2` (Steel Sword is not on Aragorn)
