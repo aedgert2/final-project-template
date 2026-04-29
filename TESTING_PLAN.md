@@ -138,8 +138,8 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 200 with array of 1 character: Legolas (id=3)
 
 **401 Unauthorized:**
-- Remove JWT from Swagger Authorize
-- Expect 401
+- Remove JWT from Swagger Authorize, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 ---
 
@@ -158,8 +158,8 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "ID must be a positive integer." }`
 
 **401 Unauthorized:**
-- Remove JWT and try id: `1`
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — not owner:**
 - Still logged in as Alice, id: `3` (Legolas, owned by Bob)
@@ -194,16 +194,17 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "level must be a positive integer." }`
 
 **401 Unauthorized:**
-- Remove JWT, id: `1`
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, Body: `{ "name": "Strider" }`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — not owner:**
-- Log in as Alice, id: `3` (Bob's character), Body: `{ "name": "Test" }`
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize
+- id: `3` (Bob's character), Body: `{ "name": "Test" }`
+- Expect 403: `{ "error": "You do not own this character." }`
 
 **404 Not Found:**
 - id: `9999`, Body: `{ "name": "Ghost" }`
-- Expect 404
+- Expect 404: `{ "error": "Character with id 9999 does not exist." }`
 
 ---
 
@@ -223,16 +224,17 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "ID must be a positive integer." }`
 
 **401 Unauthorized:**
-- Remove JWT, id: `1`
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — not owner:**
-- Log in as Alice, id: `3` (Bob's character)
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize
+- DELETE id: `3` (Bob's character)
+- Expect 403: `{ "error": "You do not own this character." }`
 
 **404 Not Found:**
 - id: `9999`
-- Expect 404
+- Expect 404: `{ "error": "Character with id 9999 does not exist." }`
 
 ---
 
@@ -251,12 +253,13 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "itemId must be a positive integer." }`
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, Body: `{ "itemId": 6 }`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — not owner:**
-- Log in as Alice, id: `3` (Bob's character), Body: `{ "itemId": 1 }`
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize
+- id: `3` (Bob's character), Body: `{ "itemId": 1 }`
+- Expect 403: `{ "error": "You do not own this character." }`
 
 **404 Not Found — character doesn't exist:**
 - id: `9999`, Body: `{ "itemId": 1 }`
@@ -284,15 +287,16 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 
 **400 Bad Request — invalid id:**
 - id: `-1`, itemId: `1`
-- Expect 400
+- Expect 400: `{ "error": "ID must be a positive integer." }`
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, itemId: `4`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — not owner:**
-- Log in as Alice, id: `3` (Bob's character), itemId: `3`
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize
+- id: `3` (Bob's character), itemId: `3`
+- Expect 403: `{ "error": "You do not own this character." }`
 
 **404 Not Found — character doesn't exist:**
 - id: `9999`, itemId: `1`
@@ -323,11 +327,12 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "name and description are required." }`
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, Body: `{ "name": "Bard", "description": "A charismatic performer." }`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — regular user:**
-- Log in as Alice and authorize, then attempt POST
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize
+- Body: `{ "name": "Bard", "description": "A charismatic performer." }`
 - Expect 403: `{ "error": "Forbidden. Admin access required." }`
 
 **409 Conflict — duplicate name:**
@@ -346,8 +351,8 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 200 with array of 4+ classes (Warrior, Mage, Rogue, Paladin)
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 ---
 
@@ -366,8 +371,8 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "ID must be a positive integer." }`
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **404 Not Found:**
 - id: `9999`
@@ -390,16 +395,17 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "No valid fields provided for update." }`
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, Body: `{ "description": "An updated melee fighter description." }`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — regular user:**
-- Log in as Alice, attempt PUT on id: `1`
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize
+- id: `1`, Body: `{ "description": "Unauthorized update attempt." }`
+- Expect 403: `{ "error": "Forbidden. Admin access required." }`
 
 **404 Not Found:**
-- id: `9999`, Body: `{ "name": "Ghost" }`
-- Expect 404
+- id: `9999`, Body: `{ "description": "Does not exist." }`
+- Expect 404: `{ "error": "Class with id 9999 does not exist." }`
 
 **409 Conflict — duplicate name:**
 - id: `1`, Body: `{ "name": "Mage" }` (Mage already exists)
@@ -419,12 +425,12 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 200 with the deleted class object
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — regular user:**
-- Log in as Alice, attempt DELETE
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize, attempt DELETE on id: `1`
+- Expect 403: `{ "error": "Forbidden. Admin access required." }`
 
 **404 Not Found:**
 - id: `9999`
@@ -459,12 +465,13 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "tier must be a positive integer." }`
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, Body: `{ "name": "Dragon Lance", "type": "weapon", "tier": 3 }`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — regular user:**
-- Log in as Alice, attempt POST
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize
+- Body: `{ "name": "Dragon Lance", "type": "weapon", "tier": 3 }`
+- Expect 403: `{ "error": "Forbidden. Admin access required." }`
 
 **409 Conflict — duplicate name:**
 - Body: `{ "name": "Iron Sword", "type": "weapon", "tier": 1 }`
@@ -482,8 +489,8 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 200 with array of 6+ items
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 ---
 
@@ -502,8 +509,8 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "ID must be a positive integer." }`
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **404 Not Found:**
 - id: `9999`
@@ -530,16 +537,17 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 400: `{ "error": "type must be one of: weapon, armor, spell, consumable, accessory." }`
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `6`, Body: `{ "tier": 2 }`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — regular user:**
-- Log in as Alice, attempt PUT
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize
+- id: `1`, Body: `{ "tier": 2 }`
+- Expect 403: `{ "error": "Forbidden. Admin access required." }`
 
 **404 Not Found:**
 - id: `9999`, Body: `{ "tier": 1 }`
-- Expect 404
+- Expect 404: `{ "error": "Item with id 9999 does not exist." }`
 
 **409 Conflict — duplicate name:**
 - id: `1`, Body: `{ "name": "Steel Sword" }` (already exists)
@@ -559,12 +567,12 @@ All tests are performed via Swagger UI at: `https://final-project-characters.onr
 - Expect 200 with the deleted item object
 
 **401 Unauthorized:**
-- Remove JWT
-- Expect 401
+- Remove JWT from Swagger Authorize, id: `1`, then click Execute
+- Expect 401: `{ "error": "Authentication required. Please provide a Bearer token." }`
 
 **403 Forbidden — regular user:**
-- Log in as Alice, attempt DELETE
-- Expect 403
+- Log in as Alice (`alice@example.com` / `User123!`) and authorize, attempt DELETE on id: `1`
+- Expect 403: `{ "error": "Forbidden. Admin access required." }`
 
 **404 Not Found:**
 - id: `9999`
